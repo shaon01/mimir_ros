@@ -49,3 +49,6 @@ qtcreator-*
 
 # Catkin custom files
 CATKIN_IGNORE
+Arduino_driver/ArduinoROSDriver/.vscode/arduino.json
+Arduino_driver/ArduinoROSDriver/.vscode/c_cpp_properties.json
+.catkin_workspace

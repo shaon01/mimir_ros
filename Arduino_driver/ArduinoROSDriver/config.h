@@ -5,17 +5,17 @@
 #define DIRD1 7 
 #define DIRD2 8  //D电机方向
 
-#define PWMC 10    //C电机转速
-#define DIRC1 28 
-#define DIRC2 26  //C电机方向
+#define PWMC 11    //C电机转速
+#define DIRC1 5 
+#define DIRC2 6  //C电机方向
 
-#define PWMB 11   //B电机转速
-#define DIRB1 5 
-#define DIRB2 6  //B电机方向
+#define PWMB 9   //B电机转速
+#define DIRB1 22 
+#define DIRB2 24  //B电机方向
 
-#define PWMA 9    //A电机转速
-#define DIRA1 24    //26  
-#define DIRA2 22    //27  //A电机方向
+#define PWMA 10    //A电机转速
+#define DIRA1 26    //26  
+#define DIRA2 28    //27  //A电机方向
 
 //in our configuration
 //   (A)//   x+     \\(B)
