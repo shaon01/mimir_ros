@@ -11,14 +11,28 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Int8.h>
 #include <Loki.h>
+#include <geometry_msgs/Twist.h>
 
 ros::NodeHandle  nh;
 Loki evilLoki = Loki();
 
+void cmdVelCb( const geometry_msgs::Twist& twist_msg){
+
+  float vx=twist_msg.linear.x;
+  float vy=twist_msg.linear.y;
+  float w=twist_msg.angular.z;
+
+  if (vx >0){evilLoki.go_advance();}
+  else if (vx<0){evilLoki.go_back();}
+  else if (w>0){evilLoki.clockwise();}
+  else if (w<0){evilLoki.counterclockwise();}
+  else {evilLoki.stop_Stop();}
+
+
+}
+
 // call back function for navigation masage
-void lokiDriveDirection( const std_msgs::String& directionMsg);
-// creating the subscriber topi with name LokiDriveDirection
-ros::Subscriber<std_msgs::String> sub("Loki_drive_direction", lokiDriveDirection );
+ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel", cmdVelCb );
 
 // Publisher massage 
 std_msgs::Int8 sensor_data;
@@ -46,6 +60,7 @@ void loop()
   // delay(500);
 }
 
+/*
 void lokiDriveDirection( const std_msgs::String& directionMsg){
   
   if (strcmp(directionMsg.data, "Forward") == 0)
@@ -88,6 +103,7 @@ void lokiDriveDirection( const std_msgs::String& directionMsg){
   nh.loginfo(directionMsg.data);
   
 }
+*/
 
 void sendSenorData()
 {
