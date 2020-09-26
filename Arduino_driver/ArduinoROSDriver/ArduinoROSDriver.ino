@@ -6,6 +6,8 @@
 #include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include<std_msgs/Bool.h>
+#include <std_msgs/Int8.h>
+#include <HCSR04.h>
 
 
 #include"encoder.h"
@@ -13,6 +15,7 @@
 #include"motor.h"
 #include"pid.hpp"
 #include"imu.hpp"
+
 
 //#define HDW_DEBUG
 
@@ -22,6 +25,7 @@
 ros::NodeHandle  nh;
 
 #endif
+long dist_pub_timer = 0;
 
 float ctrlrate=1.0;
 unsigned long lastctrl;
@@ -29,6 +33,10 @@ unsigned long lastctrl;
 geometry_msgs::Twist twist;
 nav_msgs::Odometry odom;
 ros::Publisher odom_pub("odom", &odom);
+
+// Publisher massage for Distance_sensor
+std_msgs::Int8 sensor_data;
+ros::Publisher Sensor_value("Distance_sensor", &sensor_data);
 
 double x=0,y=0,theta=0;
 
@@ -42,6 +50,8 @@ MPID PIDD(encD,KP,KI,KD,false);
 float wA,wB,wC,wD;
 
 BMX055 Imu;
+
+HCSR04 hc(30,31);//initialisation class HCSR04 (trig pin , echo pin)
 
 //#if !defined(HDW_DEBUG)
 void cmdVelCb( const geometry_msgs::Twist& twist_msg){
@@ -106,6 +116,7 @@ void setup()
   nh.subscribe(sub);
   nh.subscribe(resub);
   nh.advertise(odom_pub);
+  nh.advertise(Sensor_value);
   lastctrl=millis();
   #endif
 }
@@ -176,6 +187,15 @@ void loop(){
   if((millis()-lastctrl)>1000*ctrlrate){
     STOP();
   }
+
+  // publish Distance_sensor
+  if (millis() > dist_pub_timer)
+  {
+    sensor_data.data = hc.dist();
+    Sensor_value.publish(&sensor_data);
+    dist_pub_timer = millis() + 350; //publish once at every 350ms
+  }
+
   nh.spinOnce();
   #endif
  
