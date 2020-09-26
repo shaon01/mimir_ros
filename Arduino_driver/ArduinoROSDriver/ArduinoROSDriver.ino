@@ -20,9 +20,9 @@
 //#define HDW_DEBUG
 
 #if !defined(HDW_DEBUG)
-//ros::NodeHandle_<ArduinoHardware, 5, 5, 512, 1024> nh;
+ros::NodeHandle_<ArduinoHardware, 5, 5, 512, 1024> nh;
 //tf::TransformBroadcaster broadcaster;
-ros::NodeHandle  nh;
+
 
 #endif
 long dist_pub_timer = 0;
@@ -181,7 +181,7 @@ void loop(){
   odom.twist.twist.linear.y = vyi;
   odom.twist.twist.angular.z = omegai;
 
-  //odom_pub.publish(&odom);
+  // odom_pub.publish(&odom);
 
 
   if((millis()-lastctrl)>1000*ctrlrate){
